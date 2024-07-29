@@ -18,6 +18,8 @@ public class AggregatorSelector {
         return map.get(count).isFull();
      }
      public static List<FinalData> getFinalData (long count) {
-        return map.get(count).getFinalData();
+         List<FinalData> lsit = map.get(count).getFinalData();
+         map.remove(count);
+         return lsit;
      }
 }
