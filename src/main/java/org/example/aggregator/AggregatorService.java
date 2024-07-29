@@ -4,6 +4,11 @@ import org.example.aggregator.data.Data;
 import org.example.aggregator.data.DataUrl;
 import org.example.aggregator.data.FinalData;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -50,6 +55,7 @@ public class AggregatorService {
                         throw new RuntimeException(e);
                     }
                 });*/
+        //Todo 404 ошибка
         //Todo Аналог http запроса  (нет доступа)
         for (int i = 0; i < size; i++) {
             data.add(new Data(i, generator(), generator()));

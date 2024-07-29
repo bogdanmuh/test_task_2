@@ -20,7 +20,6 @@ public class Aggregator {
         this.count = count;
         arrayList = new CopyOnWriteArrayList<>();
         lock = Lock.get(count);
-
     }
 
     public void add (FinalData data) {
