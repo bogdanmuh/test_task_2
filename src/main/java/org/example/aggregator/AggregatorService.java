@@ -4,6 +4,11 @@ import org.example.aggregator.data.Data;
 import org.example.aggregator.data.DataUrl;
 import org.example.aggregator.data.FinalData;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -22,10 +27,8 @@ public class AggregatorService {
 
     private AggregatorService() {
         System.out.println("ServiceAgregator create");
-        // нескольок потоков
         Thread thread1 = new ProccesserToken();
         thread1.start();
-        // нескольок потоков
         Thread thread = new ProccesserSource();
         thread.start();
     }
@@ -33,6 +36,25 @@ public class AggregatorService {
     public List<FinalData> aggregareData()  {
         System.out.println("aggregareData url - " + url);
         List <Data> data = new ArrayList<>();
+
+
+        /*HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .GET()
+                .build();
+        HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body)
+                .thenAccept(body -> {
+                    try {
+                        FinalData finalData = mapper.readValue(body, FinalData.class);
+                        //Map<String, Object> mapping = new ObjectMapper().readValue(body, HashMap.class);
+                        AggregatorSelector.add(data.getCount(), finalData);
+                    } catch (Throwable  e) {
+                        System.out.println(e.getMessage());
+                        System.out.println(e);
+                        throw new RuntimeException(e);
+                    }
+                });*/
         /*обращаюсь к чему то пока генератор */ //нет ответа ?
         for (int i = 0; i < size; i++) {
             data.add(new Data(i, generator(), generator()));
@@ -58,6 +80,7 @@ public class AggregatorService {
                     throw new RuntimeException(e);
                 }
             }
+            Lock.remove(c);
         }
         System.out.println("аггрегации завершена");
         return AggregatorSelector.getFinalData(c);
@@ -72,10 +95,6 @@ public class AggregatorService {
             sb.append(randomChar);
         }
         return sb.toString();
-    }
-
-    private boolean isUrl(String url) {
-        return true;
     }
 
     public static void setSize(int size) {

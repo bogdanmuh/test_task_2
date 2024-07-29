@@ -39,7 +39,9 @@ public class Aggregator {
             synchronized (lock) {
                 if (arrayList.size() == size) {
                     System.out.println("Array " + count + "ready ");
-                    Lock.get(count).notify();
+                    synchronized (Lock.get(count)) {
+                        Lock.get(count).notify();
+                    }
                 }
             }
         }

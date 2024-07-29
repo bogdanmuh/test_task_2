@@ -12,6 +12,10 @@ public class Lock {
 
     public static Object get (Long count) {
         return map.get(count);
-   }
+    }
+
+    public static void remove (Long count) {
+        map.remove(count);
+    }
 
 }
