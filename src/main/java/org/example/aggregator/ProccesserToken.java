@@ -3,20 +3,15 @@ package org.example.aggregator;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.example.aggregator.data.DataUrl;
 import org.example.aggregator.data.FinalData;
-import org.example.aggregator.data.UrlType;
 
-import java.io.IOException;
-import java.net.URI;
 import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
+
+import static org.example.aggregator.Generator.generator;
 
 public class ProccesserToken extends Thread {
-
-    /*два разных запроса к сервису и какие то id камер будут одинаковы */
+    //Todo два разных запроса к сервису и какие то id камер будут одинаковы
 
     private static final HttpClient client = HttpClient.newBuilder().build();
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -35,7 +30,8 @@ public class ProccesserToken extends Thread {
             }
             System.out.println("ProccesserToken count - "  + data.getCount() + " id - " + data.getId());
 
-            /*CompletableFuture.runAsync(() -> {
+            //Todo Аналог http запроса  (нет доступа)
+            CompletableFuture asd = CompletableFuture.runAsync(() -> {
                         System.out.println("sleep");
                         try {
                             Thread.sleep(200);
@@ -53,8 +49,9 @@ public class ProccesserToken extends Thread {
                     System.out.println(e);
                     throw new RuntimeException(e);
                 }
-            });*/
-            HttpRequest request = HttpRequest.newBuilder()
+            });
+            //end TODO
+            /*HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(data.getDataUrl()))
                     .GET()
                     .build();
@@ -69,19 +66,8 @@ public class ProccesserToken extends Thread {
                             System.out.println(e);
                             throw new RuntimeException(e);
                         }
-                    });
+                    });*/
         }
-    }
-
-    public String generator () {
-        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < 8; i++) {
-            int index = new Random().nextInt(alphabet.length());
-            char randomChar = alphabet.charAt(index);
-            sb.append(randomChar);
-        }
-        return sb.toString();
     }
 
 }

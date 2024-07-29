@@ -4,23 +4,21 @@ import org.example.aggregator.data.Data;
 import org.example.aggregator.data.DataUrl;
 import org.example.aggregator.data.FinalData;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static org.example.aggregator.Generator.generator;
+
 public class AggregatorService {
+
     private static final AtomicLong count = new AtomicLong();
     private static final String url = "https://run.mocky.io/v3/0f95b5e3-6dbf-4d18-8321-e21c9a4ef613";
     private static int size = 100;
     private static final class Holder {
         private static final AggregatorService INSTANCE = new AggregatorService();
     }
+
     public static AggregatorService getInstance() {
         return Holder.INSTANCE;
     }
@@ -34,10 +32,7 @@ public class AggregatorService {
     }
 
     public List<FinalData> aggregareData()  {
-        System.out.println("aggregareData url - " + url);
         List <Data> data = new ArrayList<>();
-
-
         /*HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
@@ -55,7 +50,7 @@ public class AggregatorService {
                         throw new RuntimeException(e);
                     }
                 });*/
-        /*обращаюсь к чему то пока генератор */ //нет ответа ?
+        //Todo Аналог http запроса  (нет доступа)
         for (int i = 0; i < size; i++) {
             data.add(new Data(i, generator(), generator()));
         }
@@ -85,17 +80,6 @@ public class AggregatorService {
         }
         System.out.println("аггрегации завершена");
         return AggregatorSelector.getFinalData(c);
-    }
-
-    private String generator () {
-        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < 8; i++) {
-            int index = new Random().nextInt(alphabet.length());
-            char randomChar = alphabet.charAt(index);
-            sb.append(randomChar);
-        }
-        return sb.toString();
     }
 
     public static void setSize(int size) {

@@ -5,6 +5,7 @@ import org.example.aggregator.AggregatorService;
 import java.util.Date;
 
 public class Main {
+
     public static void main(String[] args) {
         AggregatorService.setSize(100);
         //AggregatorService.getInstance().aggregareData();
@@ -15,4 +16,5 @@ public class Main {
         }
         System.out.println(a - new Date().getTime());
     }
+
 }

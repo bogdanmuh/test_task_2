@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 
 @Path("/aggregator")
 public class AggregatorController {
+
     AggregatorService serviceAgregator = AggregatorService.getInstance();
 
     @GET
@@ -18,4 +19,5 @@ public class AggregatorController {
     public Response getById() {
         return Response.ok(serviceAgregator.aggregareData()).build();
     }
+
 }

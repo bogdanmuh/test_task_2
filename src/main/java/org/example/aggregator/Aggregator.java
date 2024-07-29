@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Aggregator {
+
     private final ConcurrentHashMap<Long, FinalData> map = new ConcurrentHashMap<>();
     private final CopyOnWriteArrayList <FinalData> arrayList;
     private final Object lock;
@@ -46,6 +47,7 @@ public class Aggregator {
             }
         }
     }
+
     public boolean isFull() {
         return arrayList.size() == size;
     }
