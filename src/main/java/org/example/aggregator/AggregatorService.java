@@ -62,12 +62,13 @@ public class AggregatorService {
         // end
         final long c = count.getAndIncrement();
         int size = data.size();
+        Lock.add(c);
         AggregatorSelector.addAggregator(c, size);
         for (int i = 0; i < size; i++) {
             SourceDataUrlQueue.add(new DataUrl(c, i , data.get(i).getSourceDataUrl()));
             TokenDataUrlQueue.add(new DataUrl(c, i , data.get(i).getTokenDataUrl()));
         }
-        Lock.add(c);
+
         if (!AggregatorSelector.isReady(c)) {
             System.out.println("ожидание аггрегации ");
             Object lock = Lock.get(c);

@@ -10,7 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Aggregator {
     private final ConcurrentHashMap<Long, FinalData> map = new ConcurrentHashMap<>();
     private final CopyOnWriteArrayList <FinalData> arrayList;
-    private final Object lock = new Object();
+    private final Object lock;
     private final int size;
     private final long count;
 
@@ -18,6 +18,8 @@ public class Aggregator {
         this.size = size;
         this.count = count;
         arrayList = new CopyOnWriteArrayList<>();
+        lock = Lock.get(count);
+
     }
 
     public void add (FinalData data) {
@@ -39,9 +41,7 @@ public class Aggregator {
             synchronized (lock) {
                 if (arrayList.size() == size) {
                     System.out.println("Array " + count + "ready ");
-                    synchronized (Lock.get(count)) {
-                        Lock.get(count).notify();
-                    }
+                    Lock.get(count).notify();
                 }
             }
         }
