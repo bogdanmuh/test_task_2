@@ -49,8 +49,7 @@ public class AggregatorService {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }
-        System.out.println(a);*/
+        };*/
         //Todo 404 ошибка
         //Todo Аналог http запроса  (нет доступа)
         for (int i = 0; i < size; i++) {
@@ -69,7 +68,7 @@ public class AggregatorService {
             //tokenDataUrlQueue.add(new DataUrl(c, i, data.get(i).getTokenDataUrl()));
         }
         if (!map.get(c).isFull()) {
-            log.info("ожидание аггрегации");
+            log.info("waiting of aggregation");
             Object lock = getLock(c);
             synchronized (lock) {
                 try {
@@ -82,23 +81,22 @@ public class AggregatorService {
             }
             locks.remove(c);
         }
-        log.info("аггрегации завершена");
+        log.info("Aggregation over");
         return map.remove(c).getFinalData();
     }
 
     private void sendRequestSource(long count, int id, String dataUrl) {
-        log.info("sendRequestSource count - {} id - {}", count, id);
+        log.info("sendRequestSource count - {}, id - {}", count, id);
         //Todo Аналог http запроса  (нет доступа)
         CompletableFuture.runAsync(() -> {
-                    log.debug("ожидание ответа");
-                    try {
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    log.debug("ответ пришел");
-                }
-        ).thenAccept((a) -> {
+            log.debug("wainting response");
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            log.debug("response is come");})
+        .thenAccept((data) -> {
             UrlType urlType = new Random().nextInt(2) == 1 ? UrlType.ARCHIVE : UrlType.LIVE;
             FinalData finalData = new FinalData(id, urlType, generator());
             try {
@@ -107,7 +105,7 @@ public class AggregatorService {
                 log.error(e.getMessage());
                 log.error(String.valueOf(e));
                 throw new RuntimeException(e);
-            }
+                }
         });
         //end Todo
         //end Todo
@@ -133,21 +131,17 @@ public class AggregatorService {
     }
 
     private void sendRequestToken(long count, int id, String dataUrl) {
-
-        log.info("sendRequestToken count - {} id - {}", count, id);
-
+        log.info("sendRequestToken count - {}, id - {}", count, id);
         //Todo Аналог http запроса  (нет доступа)
         CompletableFuture.runAsync(() -> {
-                    log.debug("ожидание ответа");
-                    try {
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    log.debug("ответ пришел");
-
-                }
-        ).thenAccept((a) -> {
+            log.debug("wainting response");
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            log.debug("response is come");})
+        .thenAccept((data) -> {
             FinalData finalData = new FinalData(id, generator(), new Random().nextInt(100, 400));
             try {
                 addNewData(count, finalData);

@@ -31,8 +31,10 @@ public class Aggregator {
         long id = data.getId();
         FinalData mapData = map.get(id);
         if (mapData == null) {
+            log.debug("put map key - {}, count - {}", id, count);
             map.put(id, data);
         } else {
+            log.info("contains map key - {}, count - {}", id, count);
             int ttl = data.getTtl();
             if (ttl == 0 && data.getValue() == null) {
                 data.setTtl(ttl);
